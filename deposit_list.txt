@@ -1,0 +1,148 @@
+# deposit_list.txt — every data file in the deposit (research data repository of Universität Hamburg,
+# doi:10.25592/uhhfdm.21960), one path per line, relative to the repository root. Lines starting with #
+# are comments. The deposit is one zip: the repository with these files in place. To build it after a
+# full run, from the repository root:
+#
+#   mkdir -p release/federated-microbiome-analysis
+#   git archive HEAD | tar -x -C release/federated-microbiome-analysis
+#   grep -v '^#' deposit_list.txt | grep . | tar -chf - -T - | tar -x -C release/federated-microbiome-analysis
+#   (cd release && zip -qrX federated-microbiome-analysis.zip federated-microbiome-analysis)
+#
+# (tar -h follows symbolic links, in case prep_data/ links to the files.)
+
+# Input matrices: what the pipeline starts from (written by prep_data_modular.py, kept as documentation)
+prep_data/anno_full_clean.csv
+prep_data/anno_full_nan.csv
+prep_data/taxa_counts_meteor_0.csv
+prep_data/strain_meteor_nan.csv
+prep_data/taxa_meta4.csv
+prep_data/taxa_sylph.csv
+
+# Step (0): cohorts after quality control (Supplementary Table 2)
+data/simulations/tables/supplementary_table1_cohorts.csv
+
+# Step (1): trees on METEOR2 species and strain
+data/simulations/tables/count_taxa_meteor_0_lgbm_central.csv
+data/simulations/tables/count_taxa_meteor_0_lgbm_federated.csv
+data/simulations/tables/count_taxa_meteor_0_lgbm_local.csv
+data/simulations/tables/count_taxa_meteor_0_lgbm_pooled.csv
+data/simulations/tables/count_taxa_meteor_0_rf_central.csv
+data/simulations/tables/count_taxa_meteor_0_rf_local.csv
+data/simulations/tables/count_taxa_meteor_0_rf_federated.csv
+data/simulations/tables/count_taxa_meteor_0_rf_pooled.csv
+# the full strain-level run; the full results table reads the federated and matched pooled tables. The
+# strain intra-cohort table is left out: the one on disk predates the tuned intra-cohort evaluation.
+data/simulations/tables/count_strain_meteor_nan_0_central.csv
+data/simulations/tables/count_strain_meteor_nan_0_federated.csv
+data/simulations/tables/count_strain_meteor_nan_0_pooled.csv
+
+# Step (2): linear models on METEOR2 species
+data/simulations/tables/count_taxa_meteor_0_log_l2_central.csv
+data/simulations/tables/count_taxa_meteor_0_log_l2_federated.csv
+data/simulations/tables/count_taxa_meteor_0_log_l2_pooled.csv
+data/simulations/tables/count_taxa_meteor_0_svm_l2_central.csv
+data/simulations/tables/count_taxa_meteor_0_svm_l2_federated.csv
+data/simulations/tables/count_taxa_meteor_0_svm_l2_pooled.csv
+
+# Step (3): parallel and sequential boosting, LGBM on METEOR2 species
+data/simulations/tables/count_taxa_meteor_0_lgbm_cyclic_boost.csv
+data/simulations/tables/count_taxa_meteor_0_lgbm_fedboost.csv
+
+# Step (4): the same boosting on METEOR2 strain (part of the full strain-level run; no paper item reads it)
+data/simulations/tables/count_strain_meteor_nan_0_fedboost.csv
+data/simulations/tables/count_strain_meteor_nan_0_cyclic_boost.csv
+
+# Step (5): LGBM on MetaPhlAn4 and Sylph
+data/simulations/tables/count_taxa_metaphlan4_0_lgbm_central.csv
+data/simulations/tables/count_taxa_metaphlan4_0_lgbm_local.csv
+data/simulations/tables/count_taxa_metaphlan4_0_lgbm_federated.csv
+data/simulations/tables/count_taxa_metaphlan4_0_lgbm_pooled.csv
+data/simulations/tables/count_taxa_sylph_0_lgbm_central.csv
+data/simulations/tables/count_taxa_sylph_0_lgbm_local.csv
+data/simulations/tables/count_taxa_sylph_0_lgbm_federated.csv
+data/simulations/tables/count_taxa_sylph_0_lgbm_pooled.csv
+
+# Step (6): sensitivity analysis, samples without age, sex or BMI kept
+data/simulations/tables/sensitivity_permissive_lgbm_central.csv
+data/simulations/tables/sensitivity_permissive_lgbm_federated.csv
+data/simulations/tables/sensitivity_permissive_lgbm_local.csv
+data/simulations/tables/sensitivity_permissive_lgbm_pooled.csv
+
+# Step (7): weighting check
+data/simulations/tables/chk_weighting_count_taxa_meteor_0_lgbm_federated.csv
+
+# Step (9): centralized evaluation of the 16 variants on the four profilers (trees: hpo_, linear: tunedA_)
+data/simulations/tables/hpo_count_strain_meteor_nan_0_lgbm_central.csv
+data/simulations/tables/hpo_count_strain_meteor_nan_0_lgbm_elasticnet_central.csv
+data/simulations/tables/hpo_count_strain_meteor_nan_0_lgbm_l1_central.csv
+data/simulations/tables/hpo_count_strain_meteor_nan_0_lgbm_l2_central.csv
+data/simulations/tables/hpo_count_strain_meteor_nan_0_rf_central.csv
+data/simulations/tables/hpo_count_strain_meteor_nan_0_rf_elasticnet_central.csv
+data/simulations/tables/hpo_count_strain_meteor_nan_0_rf_l1_central.csv
+data/simulations/tables/hpo_count_strain_meteor_nan_0_rf_l2_central.csv
+data/simulations/tables/hpo_count_taxa_metaphlan4_0_lgbm_central.csv
+data/simulations/tables/hpo_count_taxa_metaphlan4_0_lgbm_elasticnet_central.csv
+data/simulations/tables/hpo_count_taxa_metaphlan4_0_lgbm_l1_central.csv
+data/simulations/tables/hpo_count_taxa_metaphlan4_0_lgbm_l2_central.csv
+data/simulations/tables/hpo_count_taxa_metaphlan4_0_rf_central.csv
+data/simulations/tables/hpo_count_taxa_metaphlan4_0_rf_elasticnet_central.csv
+data/simulations/tables/hpo_count_taxa_metaphlan4_0_rf_l1_central.csv
+data/simulations/tables/hpo_count_taxa_metaphlan4_0_rf_l2_central.csv
+data/simulations/tables/hpo_count_taxa_meteor_0_lgbm_central.csv
+data/simulations/tables/hpo_count_taxa_meteor_0_lgbm_elasticnet_central.csv
+data/simulations/tables/hpo_count_taxa_meteor_0_lgbm_l1_central.csv
+data/simulations/tables/hpo_count_taxa_meteor_0_lgbm_l2_central.csv
+data/simulations/tables/hpo_count_taxa_meteor_0_rf_central.csv
+data/simulations/tables/hpo_count_taxa_meteor_0_rf_elasticnet_central.csv
+data/simulations/tables/hpo_count_taxa_meteor_0_rf_l1_central.csv
+data/simulations/tables/hpo_count_taxa_meteor_0_rf_l2_central.csv
+data/simulations/tables/hpo_count_taxa_sylph_0_lgbm_central.csv
+data/simulations/tables/hpo_count_taxa_sylph_0_lgbm_elasticnet_central.csv
+data/simulations/tables/hpo_count_taxa_sylph_0_lgbm_l1_central.csv
+data/simulations/tables/hpo_count_taxa_sylph_0_lgbm_l2_central.csv
+data/simulations/tables/hpo_count_taxa_sylph_0_rf_central.csv
+data/simulations/tables/hpo_count_taxa_sylph_0_rf_elasticnet_central.csv
+data/simulations/tables/hpo_count_taxa_sylph_0_rf_l1_central.csv
+data/simulations/tables/hpo_count_taxa_sylph_0_rf_l2_central.csv
+data/simulations/tables/tunedA_l2norm_count_taxa_metaphlan4_0_svm_central.csv
+data/simulations/tables/tunedA_l2norm_count_taxa_metaphlan4_0_svm_elasticnet_central.csv
+data/simulations/tables/tunedA_l2norm_count_taxa_metaphlan4_0_svm_l1_central.csv
+data/simulations/tables/tunedA_l2norm_count_taxa_metaphlan4_0_svm_l2_central.csv
+data/simulations/tables/tunedA_l2norm_count_taxa_meteor_0_svm_central.csv
+data/simulations/tables/tunedA_l2norm_count_taxa_meteor_0_svm_elasticnet_central.csv
+data/simulations/tables/tunedA_l2norm_count_taxa_meteor_0_svm_l1_central.csv
+data/simulations/tables/tunedA_l2norm_count_taxa_meteor_0_svm_l2_central.csv
+data/simulations/tables/tunedA_l2norm_count_taxa_sylph_0_svm_central.csv
+data/simulations/tables/tunedA_l2norm_count_taxa_sylph_0_svm_elasticnet_central.csv
+data/simulations/tables/tunedA_l2norm_count_taxa_sylph_0_svm_l1_central.csv
+data/simulations/tables/tunedA_l2norm_count_taxa_sylph_0_svm_l2_central.csv
+data/simulations/tables/tunedA_zscore_count_taxa_metaphlan4_0_log_central.csv
+data/simulations/tables/tunedA_zscore_count_taxa_metaphlan4_0_log_elasticnet_central.csv
+data/simulations/tables/tunedA_zscore_count_taxa_metaphlan4_0_log_l1_central.csv
+data/simulations/tables/tunedA_zscore_count_taxa_metaphlan4_0_log_l2_central.csv
+data/simulations/tables/tunedA_zscore_count_taxa_meteor_0_log_central.csv
+data/simulations/tables/tunedA_zscore_count_taxa_meteor_0_log_elasticnet_central.csv
+data/simulations/tables/tunedA_zscore_count_taxa_meteor_0_log_l1_central.csv
+data/simulations/tables/tunedA_zscore_count_taxa_meteor_0_log_l2_central.csv
+data/simulations/tables/tunedA_zscore_count_taxa_sylph_0_log_central.csv
+data/simulations/tables/tunedA_zscore_count_taxa_sylph_0_log_elasticnet_central.csv
+data/simulations/tables/tunedA_zscore_count_taxa_sylph_0_log_l1_central.csv
+data/simulations/tables/tunedA_zscore_count_taxa_sylph_0_log_l2_central.csv
+
+# Step (10): figures
+data/simulations/figures/training_cohorts/lgbm/double_linebox/test_roc_auc_test_mcc/count_taxa_meteor_0_lgbm_test_roc_auc_test_mcc_federated_analysis_-_line_by_eval.png
+data/simulations/figures/training_cohorts/lgbm/double_linebox/test_roc_auc_test_mcc/count_taxa_meteor_0_lgbm_test_roc_auc_test_mcc_federated_analysis_-_line_by_eval.csv
+data/simulations/figures/model_comparison_central_auroc_by_dataset_tuned.png
+data/simulations/figures/model_comparison_central_auroc_by_dataset_tuned.pdf
+data/simulations/figures/model_comparison_central_auroc_by_dataset_tuned.csv
+data/simulations/figures/all_cohorts/lgbm/double_linebox/test_roc_auc_test_mcc/count_taxa_meteor_0_lgbm_test_roc_auc_test_mcc_federated_analysis_-_line_by_eval.png
+data/simulations/figures/all_cohorts/lgbm/double_linebox/test_roc_auc_test_mcc/count_taxa_meteor_0_lgbm_test_roc_auc_test_mcc_federated_analysis_-_line_by_eval.csv
+data/simulations/figures/count_taxa_meteor_0_lgbm_federated_comparison.png
+data/simulations/figures/count_taxa_meteor_0_lgbm_federated_comparison.csv
+
+# Step (11): in-text numbers and Supplementary Tables 3, 4 and 5
+data/simulations/tables/paper_numbers.csv
+data/simulations/tables/supplementary_table3_aggregation.csv
+data/simulations/tables/supplementary_table4_full_results.csv
+data/simulations/tables/supplementary_table5_sensitivity.csv
+data/simulations/tables/inversion_rates.csv

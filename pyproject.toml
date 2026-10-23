@@ -1,0 +1,26 @@
+[project]
+name = "federated-publication"
+version = "0.1.0"
+description = "Federated privacy-aware microbiome profiling for colorectal cancer detection"
+requires-python = ">=3.11,<3.13"
+dependencies = [
+    "lightgbm>=4.5",
+    "scikit-learn>=1.4",
+    "pandas>=2.2",
+    "numpy>=1.26",
+    "scipy>=1.10",
+    "matplotlib>=3.9",
+    "seaborn>=0.13",
+    "joblib>=1.3",
+    "tqdm>=4.66",
+    "pyyaml>=6.0",
+    "openpyxl>=3.1",
+]
+
+[tool.uv]
+package = false
+
+[dependency-groups]
+dev = [
+    "python-docx>=1.1",   # building the red-marked manuscript .docx deliverables
+]

@@ -1,0 +1,57 @@
+dataset,model,mean,median,std,count
+METEOR2,rf,0.8056,0.81,0.0232,25
+METEOR2,rf_l1,0.8062,0.8114,0.0226,25
+METEOR2,rf_l2,0.8076,0.8119,0.024,25
+METEOR2,rf_elasticnet,0.8068,0.8111,0.0238,25
+METEOR2,lgbm,0.8484,0.8508,0.0198,25
+METEOR2,lgbm_l1,0.8521,0.856,0.0196,25
+METEOR2,lgbm_l2,0.8519,0.8548,0.0207,25
+METEOR2,lgbm_elasticnet,0.8537,0.8565,0.017,25
+METEOR2,svm,0.8021,0.8078,0.0203,25
+METEOR2,svm_l1,0.8272,0.8256,0.022,25
+METEOR2,svm_l2,0.8258,0.8315,0.0204,25
+METEOR2,svm_elasticnet,0.5,0.5,0.0,25
+METEOR2,log,0.7992,0.8023,0.0175,25
+METEOR2,log_l1,0.8389,0.843,0.0206,25
+METEOR2,log_l2,0.8383,0.8436,0.0216,25
+METEOR2,log_elasticnet,0.8298,0.8302,0.0221,25
+METEOR2 (strain),rf,0.7868,0.7864,0.0194,25
+METEOR2 (strain),rf_l1,0.787,0.7888,0.0204,25
+METEOR2 (strain),rf_l2,0.7872,0.7874,0.0218,25
+METEOR2 (strain),rf_elasticnet,0.7854,0.7865,0.0204,25
+METEOR2 (strain),lgbm,0.8373,0.842,0.0191,25
+METEOR2 (strain),lgbm_l1,0.8421,0.8448,0.0174,25
+METEOR2 (strain),lgbm_l2,0.8423,0.846,0.015,25
+METEOR2 (strain),lgbm_elasticnet,0.8426,0.8454,0.0151,25
+MetaPhlAn4,rf,0.7907,0.7959,0.0205,25
+MetaPhlAn4,rf_l1,0.7935,0.8032,0.023,25
+MetaPhlAn4,rf_l2,0.7932,0.7995,0.0222,25
+MetaPhlAn4,rf_elasticnet,0.7936,0.8003,0.0206,25
+MetaPhlAn4,lgbm,0.8377,0.8387,0.0188,25
+MetaPhlAn4,lgbm_l1,0.8438,0.8453,0.0199,25
+MetaPhlAn4,lgbm_l2,0.8403,0.8418,0.0176,25
+MetaPhlAn4,lgbm_elasticnet,0.844,0.8486,0.0195,25
+MetaPhlAn4,svm,0.7813,0.784,0.0183,25
+MetaPhlAn4,svm_l1,0.8034,0.8086,0.02,25
+MetaPhlAn4,svm_l2,0.8077,0.8127,0.022,25
+MetaPhlAn4,svm_elasticnet,0.5,0.5,0.0,25
+MetaPhlAn4,log,0.7596,0.761,0.0254,25
+MetaPhlAn4,log_l1,0.8174,0.8195,0.0194,25
+MetaPhlAn4,log_l2,0.8136,0.8143,0.0199,25
+MetaPhlAn4,log_elasticnet,0.8141,0.8153,0.0229,25
+Sylph,rf,0.7944,0.7991,0.0242,25
+Sylph,rf_l1,0.793,0.7958,0.0255,25
+Sylph,rf_l2,0.7949,0.799,0.024,25
+Sylph,rf_elasticnet,0.7934,0.795,0.0236,25
+Sylph,lgbm,0.8403,0.8458,0.021,25
+Sylph,lgbm_l1,0.8461,0.8507,0.0211,25
+Sylph,lgbm_l2,0.8464,0.8511,0.0205,25
+Sylph,lgbm_elasticnet,0.845,0.8519,0.0222,25
+Sylph,svm,0.7964,0.7968,0.0237,25
+Sylph,svm_l1,0.7964,0.8,0.0268,25
+Sylph,svm_l2,0.8053,0.8095,0.0237,25
+Sylph,svm_elasticnet,0.5,0.5,0.0,25
+Sylph,log,0.7822,0.783,0.0193,25
+Sylph,log_l1,0.8048,0.8095,0.0192,25
+Sylph,log_l2,0.8099,0.8139,0.0209,25
+Sylph,log_elasticnet,0.8055,0.807,0.0231,25

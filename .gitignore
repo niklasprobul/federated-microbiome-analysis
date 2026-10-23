@@ -1,0 +1,44 @@
+# ── environment & tooling ──
+.venv/
+**/__pycache__/
+*.py[cod]
+**/*.prof
+
+# generated portable bundles
+*_bundle/
+*_bundle.tar.gz
+
+# ── bulk data, simulation outputs, caches (all generated output lives under data/) ──
+prep_data
+data
+results
+batch_effects
+microbiome
+federated/results/
+siamcat/cache*
+siamcat/plots*
+siamcat/siamcat_crc_meta_analysis_files
+**/*.csv
+**/*.tsv
+**/*.xlsx
+**/*.png
+**/*.pdf
+**/*.joblib
+**/*.html
+**/*.RData
+**/venv/
+**/logs/
+**/models/
+**/fc_data/
+**/site_info.json
+secrets.json
+**/log*
+execution_time_*.json
+run_analysis.txt
+
+# run logs
+*.log
+scratch_*.py
+
+# deposit build folder (deposit_list.txt)
+release/

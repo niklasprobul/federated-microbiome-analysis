@@ -1,0 +1,78 @@
+# =============================================================================
+# config.toml — the paper experiment, declared.
+#
+# This file holds every SHARED run parameter (seeds, reps, tuning, cohorts,
+# weighting, rounds, combo cap, and the reduced model grid). Every CLI
+# flag overrides the matching key here; nothing that changes a result is hidden
+# in the code.
+#
+# The paper's run is NOT a single no-flag invocation: each step scopes its own
+# datasets, evaluations, k and combination sweep, so the exact command sequence lives
+# in  run_full_server.sh. A no-flag run reproduces the shared config below over
+# the reduced `models` grid.
+#
+# The run is deterministic: seeds are stable across processes and runs
+# (get_deterministic_random_state uses hashlib, not the salted builtin hash),
+# so you do NOT need to set PYTHONHASHSEED.
+# =============================================================================
+
+[experiment]
+repetition   = 5           # error-bar repetitions. 10 was the original; 5 is the reproducible default.
+random_state = 42          # global seed. Every fold split, subsample and model seed derives from this.
+cross_val    = 5           # folds for the central (in-distribution) and local (intra-cohort) arms.
+exec_mode    = "load"      # 'load' skips experiments whose result file exists (resumable); 'redo' recomputes.
+# Each centre in the local arm (B) selects its own hyperparameters, by the same intra-cohort search a
+# federation client runs, nested inside each CV fold so the evaluation fold never enters the choice.
+# Set false to reproduce the submitted arm (B), which is left at the pipeline default min_data_in_leaf=2 --
+# the one configuration every federation client rejects, which makes federated-vs-local not like-for-like.
+tune_local   = true
+
+# Which arms to run. The paper reports all six:
+#   central       pooled in-distribution 5-fold CV (gold-standard reference)
+#   local         intra-cohort CV (a centre going it alone)
+#   federated     one-shot voting federation (the paper's main method)
+#   pooled        like-for-like centralized baseline at matched k (the honest comparison for `federated`)
+#   fedboost      parallel multi-round boosting federation
+#   cyclic_boost  sequential (ring) multi-round boosting federation
+simulations = ["central", "local", "federated", "pooled", "fedboost", "cyclic_boost"]
+
+# Reduced model grid actually run for the paper (see run_full_server.sh). Empty [] = the full 16-model grid
+# {rf,lgbm,svm,log} x {none,l1,l2,elasticnet}. The paper carries ONE model per family: base trees
+# (regularisation is immaterial for them, +/-0.007 central AUROC over the four feature matrices, and
+# base rf/lgbm keep the audit trail consistent) + the best-regularised linear model per family, chosen
+# by in-distribution central AUROC ON METEOR2 SPECIES (svm_l2 +0.010, log_l2 +0.041 over unpenalised;
+# other penalties win on MetaPhlAn4/Sylph -- see Supplementary Figure 1). --models overrides this; it is applied before
+# --check-invariant, so the gate is scoped to the same grid.
+#   Boosting note: fedboost/cyclic_boost are GBDT-only, so they are meaningful only for lgbm.
+models = ["rf", "lgbm", "svm_l2", "log_l2"]
+
+[federated]
+# --- The corrected method: a properly fitted baseline and properly fitted federation members ---
+tune         = true        # fit the centralized/pooled BASELINE properly (converged solvers; depth/leaf/tree grid).
+                           # Without this every federated-vs-centralized gap is biased toward federation: the
+                           # untuned pooled SGD never converged, and a single unconverged fit loses to an ensemble.
+tune_clients = true        # fit the federation MEMBERS properly instead of the overfit min_data_in_leaf=2, with which
+                           # each member memorises its own cohort.
+                           # One-shot: each client tunes on its own cohort. Boosting: one shared config, tuned
+                           # server-side by LOCO. METHOD CHANGE (declare in the paper), worth +0.062 AUROC.
+                           # Linear clients tune C for the same LinearSVC / LogisticRegression as matched
+                           # pooled, so the two differ only in being federated or pooled.
+
+weighting        = ["none"]   # client weightings for the vote. The corrected result uses uniform: weighting and
+                              # rank-normalisation were compensating for overfit clients, not fixing the aggregation.
+                              # Options: none | size (comma-list to sweep).
+voting           = "auto"     # auto -> soft when members expose predict_proba, else hard. Or soft|hard.
+rounds           = 5          # boosting rounds for fedboost/cyclic. The total tree budget is split across visits,
+                              # so R does not change ensemble size.
+max_combos_per_k = 60         # federated combination sweep is subsampled to this many C(11,k) combos per k
+                              # (seeded, unbiased for the panel-D mean). 0 = exhaustive (every combination).
+
+[cohorts]
+# Canonical cohort definitions, verified against source publications + ENA (see run_analysis.py header).
+merge_germany = true       # Germany1+Germany2 -> 'Germany' (one Heidelberg/ColoCare recruitment).
+split_italy   = true       # Italy1 -> Italy1a/Italy1b (Thomas 2019's two Italian cohorts).
+
+[resources]
+# Machine tuning only — these change SPEED, never RESULTS. Adjust to your host.
+n_jobs          = -1       # max concurrent experiment processes (-1 = all cores - 2).
+threads_per_job = 4        # threads per model; also caps each estimator's n_jobs.
